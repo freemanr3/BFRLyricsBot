@@ -3,24 +3,24 @@ import random
 import tweepy
 
 
-#Input API Keys and tokens as found on GENIUS
+#INPUT API KEY & TOKENS FROM GENIUS
 keys = {
-	'CONSUMER_API_KEY': 'M8QkUPVcrBj45LcAoPCtnAun0',
-	'CONSUMER_API_SECRET_KEY': 'oG3DPDZ7RLshcXWars7rFoSEptbfzl3YcfoQiyvot4EbGlXYE7',
-	'ACCESS_TOKEN': '1555242902858735618-Z1Hp8oIAER9c2VG2TtUeK13wkmE8l9',
-	'ACCESS_TOKEN_SECRET': '7eNTjNBBeqjwYxi35VTRn6s4p58hKaTLPmfVQ0SxzxgbV'
+	'CONSUMER_API_KEY': 'PASTE_YOUR_KEY',
+	'CONSUMER_API_SECRET_KEY': 'PASTE_YOUR_SECRET_KEY',
+	'ACCESS_TOKEN': 'PASTE_YOUR_ACCESS_TOKEN',
+	'ACCESS_TOKEN_SECRET': 'PASTE_YOUR_TOKEN_SECRET'
 	}
-genius = lyricsgenius.Genius ("1q4nreQz569w-aRJKDJOrUrepX3gduBPPTnoOLtHhSkepmsLMx-rfZv_8V7Nl2YW")
+#PASTE ACCESS TOKEN AND ENTER THE ARTIST YOU WANT TO PULL LYCRICS// #RUN AND A LIST OF SONGS WILL PRINT IN ANOTHER FILE
+genius = lyricsgenius.Genius ("PASTE_ACCESS_TOKEN")
 artist = genius.search_artist("Babyface Ray")
 print(artist.songs)
 
-#Once you run your code another window will open with a song list, copy and paste the songs you wish
 
+#COPY AND PASTE
 all_songs =  ["My Thoughts Part II","Paperwork Party", "Gallery Dept", "#1 Fan", "Hall of Fame", "If You Know You Know", "Start This Over", "Like Daisy Lane","Real Niggas Don’t Rap","Fake Luv","Real","Ashanti","What The Business Is","A Million Cash Race","Fuck Summer Jamz","Legend","Sincerely Face","Family﹥Money","Miami In November","I Went To New York","Touchdown","Tap In","Scared of Them","My Thoughts  / Pop’s Prayer","Addy","Tahoe","Rip Jas","Change My #","I Got Use to This","Pink 10s","Steve Francis","Let Me Down","6 Mile Show","Still Gone Bust a Band","Overtime","Foreva","Free Spazzo","Blood Sweat & Tears","Mob","Tunnel Vision","Football Pads","In the Game","Motown Music","Allowance","Me, Wife & Kids","Ron Artest","Move to LA","Give No Fucks","Better Days","Change You","Steak N Lobster","Didn’t Panic","Spending Spree","Palm Angels, Palms Itching","Kingpin","Off Rap","You Can’t Get a Verse","Seduction","No Limit Soldiers","Idols","Back N Action","Richard Flair", "Same Pain", "Needed Some Love", "They Think I Rap My Brother’s Life","Catch It","My Thoughts", "Kush & Codeine", "Trill Spill", "Time 11AM / 8PM", "Go Yard", "Flowers When I’m Alive", "Too Many", "Big Estate", "Lynch Em", "Fell in Love", "Illmatic", "RIP, Pt.1 "
  "oz", "Snow Globe","XXL Freshman Freestyle Babyface Ray"]
  
- #This command pulls the lyrics from a random song you pasted
-
+ #THE FOLLOWING COMMAND PULLS LYRICS FROM A RANDOMIZED SONG PASTED ABOVE
 def get_raw_lyrics():
 	genius_client_access_token = "1q4nreQz569w-aRJKDJOrUrepX3gduBPPTnoOLtHhSkepmsLMx-rfZv_8V7Nl2YW"
 	genius = lyricsgenius.Genius(genius_client_access_token)
@@ -29,7 +29,7 @@ def get_raw_lyrics():
 	song = random_song_title.upper()
 	return lyrics, song
 
-#These commands split the lyrics into 2 lines and scrubs lines of blank text, then tweets it
+#THESE COMMANDS SCRUB THE LINES OF BLANK TEXT AND POSTS IT 
 
 def get_tweet_from(lyrics):
 	lines = lyrics.split('\n')
@@ -43,7 +43,7 @@ def get_tweet_from(lyrics):
 		tweet = tweet.replace("\\","")
 		return tweet
 	
-	#This handler is required to allow AWS Lambda to read and execute your script
+	#THIS HANDLER IS REQURIED FOR AWS LMABDA TO READ AND WRITE YOUR SCRIPT
 		
 def handler(event, context):
 	auth = tweepy.OAuthHandler(
@@ -54,6 +54,7 @@ def handler(event, context):
 		keys['ACCESS_TOKEN'],
 		keys['ACCESS_TOKEN_SECRET']
     )
+	#THIS USES THE TWEEPY API TO POST THE LYRICS AND UPDATE PROFILE TO THE SONG TITLE
 	api = tweepy.API(auth)
 	lyrics, song = get_raw_lyrics()
 	tweet = get_tweet_from(lyrics)
